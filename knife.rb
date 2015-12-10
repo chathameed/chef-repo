@@ -1,6 +1,6 @@
 log_level                :info
 log_location             STDOUT
-node_name                'Muthu-Laptop'
+node_name                'muthulakshmanan'
 client_key               'C:/Users/ms66518/.chef/muthulakshmanan.pem'
 validation_client_name   'laksh-validator'
 validation_key           'C:/Users/ms66518/.chef/laksh-validator.pem'
