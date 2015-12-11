@@ -1,0 +1,6 @@
+default[:iim][:zip_path] = "/apps/IIM/"
+default[:ihs][:zip_path] = "/apps/"
+default[:iim][:zip_file] = "/apps/IIM/agent.installer.linux.gtk.x86_1.6.2000.20130301_2248.zip"
+default[:ihs][:zip_file] = "/apps/IHS.zip"
+default[:iim][:s3_url] = "https://s3-us-west-2.amazonaws.com/ihsbin/agent.installer.linux.gtk.x86_1.6.2000.20130301_2248.zip"
+default[:ihs][:s3_url] = "/home/vagrant/IHS.zip"
