@@ -6,4 +6,4 @@ validation_client_name   'laksh-validator'
 validation_key           'C:/Users/ms66518/.chef/laksh-validator.pem'
 chef_server_url          'https://api.chef.io/organizations/laksh'
 syntax_check_cache_path  'C:/Users/ms66518/chef-repo/syntax_check_cache'
-cookbook_path [ 'C:/Users/ms66518/chef-repo//cookbooks' ]
+cookbook_path [ 'C:/Users/ms66518/chef-repo/cookbooks' ]
