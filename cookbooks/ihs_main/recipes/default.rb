@@ -37,4 +37,5 @@ end
 execute "unpack #{ihs_zip_file}" do
   cwd ihs_zip_dir
   command "unzip #{ihs_zip_file}"
+  not_if { ::File.directory? ("#{ihs_zip_dir}/IHS") }
 end
