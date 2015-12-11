@@ -13,6 +13,8 @@ ihs_zip_file = node[:ihs][:zip_file]
 im_s3_url = node[:iim][:s3_url]
 ihs_s3_url = node[:ihs][:s3_url]
 
+package "unzip"
+
 [im_zip_dir, ihs_zip_dir].each do |dirname|
   directory dirname do
     mode '0755'
