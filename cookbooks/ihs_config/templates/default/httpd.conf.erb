@@ -103,8 +103,8 @@ Listen <%= node['ihs']['listen_port'] %>
 #
 # Example:
 # LoadModule foo_module modules/mod_foo.so
-#LoadModule sm_module "<%= node['siteminder']['root']/bin/libmod_sm22.so"
-#SmInitFile "<%= node['ihs']['conf_dir'] %>/WebAgent.conf"
+LoadModule sm_module <%= node['ihs']['siteminder_root'] %>/bin/libmod_sm22.so
+SmInitFile <%= node['ihs']['conf_dir'] %>/WebAgent.conf
 LoadModule authz_host_module modules/mod_authz_host.so
 LoadModule auth_basic_module modules/mod_auth_basic.so
 LoadModule authn_file_module modules/mod_authn_file.so
