@@ -103,7 +103,7 @@ Listen <%= node['ihs']['listen_port'] %>
 #
 # Example:
 # LoadModule foo_module modules/mod_foo.so
-#LoadModule sm_module "<%= node['siteminder']['root']/libmod_sm22.so"
+#LoadModule sm_module "<%= node['siteminder']['root']/bin/libmod_sm22.so"
 #SmInitFile "<%= node['ihs']['conf_dir'] %>/WebAgent.conf"
 LoadModule authz_host_module modules/mod_authz_host.so
 LoadModule auth_basic_module modules/mod_auth_basic.so
@@ -406,8 +406,8 @@ EnableSendfile off
 # logged here.  If you *do* define an error logfile for a <VirtualHost>
 # container, that host's errors will be logged there and not here.
 #
-ErrorLog "|/apps/ihs-bin/IHS70033/bin/rotatelogs /logs/ihs/https-mxecssit1/logs/error.log.%Y.%m.%d 86400"
-TransferLog "|/apps/ihs-bin/IHS70033/bin/rotatelogs /logs/ihs/https-mxecssit1/logs/access.log.%Y%m%d 86400"
+ErrorLog "|<%= node['ihs']['dir'] %>/bin/rotatelogs <%= node['ihs']['log_dir'] %>/logs/error.log.%Y.%m.%d 86400"
+TransferLog "|<%= node['ihs']['dir'] %>/bin/rotatelogs <%= node['ihs']['log_dir'] %>/logs/access.log.%Y%m%d 86400"
 
 #
 # LogLevel: Control the number of messages logged to the error log.
@@ -435,7 +435,7 @@ LogFormat "%h %l %u %D %t \"%r\" %>s %b %{JSESSIONID}C"
 # logged therein and *not* in this file.
 #
 # Daily rotation of access login in common format
-#CustomLog "|/apps/ihs-bin/IHS70033/bin/rotatelogs /logs/ihs/https-mxecssit1/logs/access.%Y.%m.%d 86400" common
+#CustomLog "|<%= node['ihs']['dir'] %>/bin/rotatelogs <%= node['ihs']['log_dir'] %>/logs/access.%Y.%m.%d 86400" common
 
 #
 # If you would like to have agent and referer logfiles, uncomment the
@@ -496,55 +496,53 @@ ServerSignature Off
 # do not use FancyIndexing, you may comment this out.
 #
 
-AliasMatch /siteminderagent/nocert/[0-9]+/(.*) "/apps/siteminder/webagent/$1"
-<Directory "/apps/siteminder/webagent/$1">
+AliasMatch /siteminderagent/nocert/[0-9]+/(.*) "<%= node['ihs']['siteminder_root'] %>/$1"
+<Directory "<%= node['ihs']['siteminder_root'] %>/$1">
 Options Indexes MultiViews
 AllowOverride None
 Order allow,deny
 Allow from all
 </Directory>
-Alias /siteminderagent/pwcgi/ "/apps/siteminder/webagent/pw/"
-<Directory "/apps/siteminder/webagent/pw/">
+Alias /siteminderagent/pwcgi/ "<%= node['ihs']['siteminder_root'] %>/pw/"
+<Directory "<%= node['ihs']['siteminder_root'] %>/pw/">
 Options Indexes MultiViews ExecCGI
 AllowOverride None
 Order allow,deny
 Allow from all
 </Directory>
-Alias /siteminderagent/pw/ "/apps/siteminder/webagent/pw/"
-<Directory "/apps/siteminder/webagent/pw/">
+Alias /siteminderagent/pw/ "<%= node['ihs']['siteminder_root'] %>/pw/"
+<Directory "<%= node['ihs']['siteminder_root'] %>/pw/">
 Options Indexes MultiViews ExecCGI
 AllowOverride None
 Order allow,deny
 Allow from all
 </Directory>
-Alias /siteminderagent/images "/apps/siteminder/webagent/mxecssit1/siteminder/samples/images"
-<Directory "/apps/siteminder/webagent/mxecssit1/siteminder/samples/images">
+Alias /siteminderagent/images "<%= node['ihs']['docroot_dir'] %>/siteminder/samples/images"
+<Directory "<%= node['ihs']['docroot_dir'] %>/siteminder/samples/images">
 Options Indexes MultiViews
 AllowOverride None
 Order allow,deny
 Allow from all
 </Directory>
-Alias /siteminderagent/ "/apps/siteminder/webagent/mxecssit1/siteminder/samples/"
-<Directory "/apps/siteminder/webagent/mxecssit1/siteminder/samples/">
-Options Indexes MultiViews
-AllowOverride None
-Order allow,deny
-Allow from all
-</Directory>
-
-Alias /sminfoagent/ "/apps/siteminder/webagent/mxecssit1/siteminder/samples/"
-<Directory "/apps/siteminder/webagent/mxecssit1/siteminder/samples/">
+Alias /siteminderagent/ "<%= node['ihs']['docroot_dir'] %>/siteminder/samples/"
+<Directory "<%= node['ihs']['docroot_dir'] %>/siteminder/samples/">
 Options Indexes MultiViews
 AllowOverride None
 Order allow,deny
 Allow from all
 </Directory>
 
+Alias /sminfoagent/ "<%= node['ihs']['docroot_dir'] %>/siteminder/samples/"
+<Directory "<%= node['ihs']['docroot_dir'] %>/siteminder/samples/">
+Options Indexes MultiViews
+AllowOverride None
+Order allow,deny
+Allow from all
+</Directory>
 
 
-
-Alias /icons/ "/apps/ihs-bin/IHS70033/icons/"
- <Directory "/apps/ihs-bin/IHS70033/icons">
+Alias /icons/ "<%= node['ihs']['dir'] %>/icons/"
+ <Directory "<%= node['ihs']['dir'] %>/icons">
      Options Indexes MultiViews
      AllowOverride None
      Order allow,deny
@@ -559,13 +557,13 @@ Alias /icons/ "/apps/ihs-bin/IHS70033/icons/"
 # The same rules about trailing "/" apply to ScriptAlias directives as to
 # Alias.
 #
-ScriptAlias /cgi-bin/ "/apps/siteminder/webagent/mxecssit1/cgi-bin/"
+ScriptAlias /cgi-bin/ "<%= node['ihs']['docroot_dir'] %>/cgi-bin/"
 
 #
-# "/logs/ihs/https-mxecssit1/web/cgi-bin/" should be changed to whatever your ScriptAliased
+# "<%= node['ihs']['log_dir'] %>/cgi-bin/" should be changed to whatever your ScriptAliased
 # CGI directory exists, if you have that configured.
 #
-<Directory "/apps/siteminder/webagent/mxecssit1/cgi-bin/">
+<Directory "<%= node['ihs']['docroot_dir'] %>/cgi-bin/">
     AllowOverride None
     Options None
     Order allow,deny
@@ -747,7 +745,7 @@ AddHandler type-map var
 # The internationalized error documents require mod_alias, mod_include
 # and mod_negotiation.  To activate them, uncomment the following 30 lines.
 
-#    Alias /error/ "/apps/ihs-bin/IHS70033/error/"
+#    Alias /error/ "<%= node['ihs']['dir'] %>/error/"
 #
 #    <Directory "/opt/ihs/70/error">
 #        AllowOverride None
@@ -870,7 +868,7 @@ BrowserMatch "^gnome-vfs" redirect-carefully
 #
 LoadModule ibm_ssl_module modules/mod_ibm_ssl.so
 <IfModule mod_ibm_ssl.c>
-Include /apps/ihs-apps/https-mxecssit1/conf/ssl.conf
+Include <%= node['ihs']['conf_dir'] %>/ssl.conf
 </IfModule>
 
 #
@@ -884,7 +882,7 @@ Include /apps/ihs-apps/https-mxecssit1/conf/ssl.conf
 #
 # The /tmp directory is often sufficient.
 #
-CoreDumpDirectory /logs/ihs/https-mxecssit1/logs
+CoreDumpDirectory <%= node['ihs']['log_dir'] %>/logs
 
 # mod_mpmstats logs statistics about server activity to the main
 # error log.  No records are written while the server is idle.
@@ -923,7 +921,7 @@ LoadModule whatkilledus_module modules/debug/mod_whatkilledus.so
 # the LoadModule directive.
 #LoadModule net_trace_module modules/debug/mod_net_trace.so
 <IfModule mod_net_trace.c>
-NetTraceFile /logs/ihs/https-mxecssit1/nettrace
+NetTraceFile <%= node['ihs']['log_dir'] %>/nettrace
 NetTrace client * dest file event senddata=65535 event recvdata=65535
 </IfModule>
 
@@ -934,23 +932,23 @@ NetTrace client * dest file event senddata=65535 event recvdata=65535
 #LoadModule proxy_ftp_module modules/mod_proxy_ftp.so
 #LoadModule proxy_http_module modules/mod_proxy_http.so
 <IfModule mod_proxy.c>
-Include /apps/ihs-apps/https-mxecssit1/conf/wasce.conf
+Include <%= node['ihs']['conf_dir'] %>/wasce.conf
 </IfModule>
 
 # WebSphere AJP plugin configuration
 LoadModule was_ap22_module /apps/ihs-bin/IHS70033/Plugins/bin/mod_was_ap22_http.so
 #<IfModule mod_was_ap22_http.c>
-WebSpherePluginConfig /apps/ihs-apps/https-mxecssit1/conf/plugin-cfg.xml
+WebSpherePluginConfig <%= node['ihs']['conf_dir'] %>/plugin-cfg.xml
 #</IfModule>
 
-#LoadModule wl_22_module /apps/ihs-bin/IHS70033/Plugins/bin/mod_wl_22.so
+#LoadModule wl_22_module <%= node['ihs']['plugin_dir'] %>/bin/mod_wl_22.so
 <IfModule mod_wl_22.c>
-Include /apps/ihs-apps/https-mxecssit1/conf/wl.conf
+Include <%= node['ihs']['conf_dir'] %>/wl.conf
 </IfModule>
 
-#LoadModule wl128_22_module /apps/ihs-bin/IHS70033/Plugins/bin/mod_wl128_22.so
+#LoadModule wl128_22_module <%= node['ihs']['plugin_dir'] %>/bin/mod_wl128_22.so
 <IfModule mod_wl128_22.c>
-Include /apps/ihs-apps/https-mxecssit1/conf/wl128.conf
+Include <%= node['ihs']['conf_dir'] %>/wl128.conf
 </IfModule>
 # End of standard configuration options
 # Please do not add or customize below this comment so SSO configuration can be completed.

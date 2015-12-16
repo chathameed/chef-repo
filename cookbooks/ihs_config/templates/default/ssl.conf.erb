@@ -1,0 +1,33 @@
+# Start of SSL config
+
+#SSLProxyEngine on
+# Only the listed ciphers are allowed
+# Please refer to http://www-01.ibm.com/support/docview.wss?rs=177&context=SSEQTJ&uid=swg21112074
+# for additional details
+# Specify TLS ciphers
+
+#Disable SSLv3 and SSLv2 Protocols
+<VirtualHost *>
+     # Enable SSL
+     SSLEnable
+     SSLProtocolDisable SSLv3
+     SSLProtocolDisable SSLv2
+     # Enable strict CBC padding
+     SSLAttributeSet 471 1
+     SSLCipherSpec 2F
+     SSLCipherSpec 35b
+     SSLCipherSpec 3A
+
+# Allow SSL specifc logging
+# SelfSigned certificates are prohibited based on CISS PKI guidelines
+#SSLServerCert SelfSign
+# The cert label must match the label specifed when using the GSK utilities
+SSLServerCert <%= node['ihs']['cert_CN'] %>
+# All instances must have a ketfile and stashfile.  Startup without an additionsl password
+# will not work without usage of a stashfile.
+KeyFile <%= node['ihs']['key_file'] %>
+SSLStashfile <%= node['ihs']['stash_file'] %>
+# added to force siddport file to instance specific location
+</VirtualHost>
+SSLCachePortFilename <%= node['ihs']['log_dir'] %>/logs/siddport
+# End of example SSL configuration
