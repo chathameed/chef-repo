@@ -406,8 +406,8 @@ EnableSendfile off
 # logged here.  If you *do* define an error logfile for a <VirtualHost>
 # container, that host's errors will be logged there and not here.
 #
-ErrorLog "|<%= node['ihs']['dir'] %>/bin/rotatelogs <%= node['ihs']['log_dir'] %>/logs/error.log.%Y.%m.%d 86400"
-TransferLog "|<%= node['ihs']['dir'] %>/bin/rotatelogs <%= node['ihs']['log_dir'] %>/logs/access.log.%Y%m%d 86400"
+ErrorLog "|<%= node['ihs']['dir'] %>/bin/rotatelogs <%= node['ihs']['log_dir'] %>/error.log.%Y.%m.%d 86400"
+TransferLog "|<%= node['ihs']['dir'] %>/bin/rotatelogs <%= node['ihs']['log_dir'] %>/access.log.%Y%m%d 86400"
 
 #
 # LogLevel: Control the number of messages logged to the error log.
@@ -435,7 +435,7 @@ LogFormat "%h %l %u %D %t \"%r\" %>s %b %{JSESSIONID}C"
 # logged therein and *not* in this file.
 #
 # Daily rotation of access login in common format
-#CustomLog "|<%= node['ihs']['dir'] %>/bin/rotatelogs <%= node['ihs']['log_dir'] %>/logs/access.%Y.%m.%d 86400" common
+#CustomLog "|<%= node['ihs']['dir'] %>/bin/rotatelogs <%= node['ihs']['log_dir'] %>/access.%Y.%m.%d 86400" common
 
 #
 # If you would like to have agent and referer logfiles, uncomment the
@@ -882,7 +882,7 @@ Include <%= node['ihs']['conf_dir'] %>/ssl.conf
 #
 # The /tmp directory is often sufficient.
 #
-CoreDumpDirectory <%= node['ihs']['log_dir'] %>/logs
+CoreDumpDirectory <%= node['ihs']['log_dir'] %>
 
 # mod_mpmstats logs statistics about server activity to the main
 # error log.  No records are written while the server is idle.
@@ -936,7 +936,7 @@ Include <%= node['ihs']['conf_dir'] %>/wasce.conf
 </IfModule>
 
 # WebSphere AJP plugin configuration
-LoadModule was_ap22_module <%= node['ihs']['plugin_dir'] %>/bin/mod_was_ap22_http.so
+LoadModule was_ap22_module <%= node['ihs']['plugin_dir'] %>/bin/64bits/mod_was_ap22_http.so
 #<IfModule mod_was_ap22_http.c>
 WebSpherePluginConfig <%= node['ihs']['conf_dir'] %>/plugin-cfg.xml
 #</IfModule>
