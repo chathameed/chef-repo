@@ -55,6 +55,6 @@ template "#{node[:ihs][:conf_dir]}/ssl.conf" do
 end
 
 service 'ibm-http' do
-  #supports :restart => true, :reload => true
+  supports :restart => true, :reload => true
   action :nothing
 end

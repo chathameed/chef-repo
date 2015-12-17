@@ -103,8 +103,8 @@ Listen <%= node['ihs']['listen_port'] %>
 #
 # Example:
 # LoadModule foo_module modules/mod_foo.so
-LoadModule sm_module <%= node['ihs']['siteminder_root'] %>/bin/libmod_sm22.so
-SmInitFile <%= node['ihs']['conf_dir'] %>/WebAgent.conf
+#LoadModule sm_module <%= node['ihs']['siteminder_root'] %>/bin/libmod_sm22.so
+#SmInitFile <%= node['ihs']['conf_dir'] %>/WebAgent.conf
 LoadModule authz_host_module modules/mod_authz_host.so
 LoadModule auth_basic_module modules/mod_auth_basic.so
 LoadModule authn_file_module modules/mod_authn_file.so
@@ -936,7 +936,7 @@ Include <%= node['ihs']['conf_dir'] %>/wasce.conf
 </IfModule>
 
 # WebSphere AJP plugin configuration
-LoadModule was_ap22_module /apps/ihs-bin/IHS70033/Plugins/bin/mod_was_ap22_http.so
+LoadModule was_ap22_module <%= node['ihs']['plugin_dir'] %>/bin/mod_was_ap22_http.so
 #<IfModule mod_was_ap22_http.c>
 WebSpherePluginConfig <%= node['ihs']['conf_dir'] %>/plugin-cfg.xml
 #</IfModule>
@@ -952,7 +952,7 @@ Include <%= node['ihs']['conf_dir'] %>/wl128.conf
 </IfModule>
 # End of standard configuration options
 # Please do not add or customize below this comment so SSO configuration can be completed.
-# __CitiSSO Configuration__
+
 
 ################################## HTTP COMPRESSION START*************************
 SetOutputFilter DEFLATE
