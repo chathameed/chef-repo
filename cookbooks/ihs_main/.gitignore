@@ -22,3 +22,4 @@ bin/*
 .kitchen/
 .kitchen.local.yml
 Vagrantfile
+*.rpm
