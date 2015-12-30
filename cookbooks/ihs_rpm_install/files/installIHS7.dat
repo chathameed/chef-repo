@@ -1,0 +1,4 @@
+INSTALL_TYPE=addFeatures
+INSTALL_LOC=/apps/ihs-bin/IHS70037
+CONF_ROOT=/apps/ihs-apps
+LOG_ROOT=/logs/ihs/

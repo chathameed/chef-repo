@@ -1,0 +1,4 @@
+source "https://supermarket.chef.io"
+
+metadata
+cookbook "ihs_config", :git => "https://github.com/muthu-s/ihs_config.git"
