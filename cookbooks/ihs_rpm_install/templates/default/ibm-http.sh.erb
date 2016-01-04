@@ -10,19 +10,26 @@
 ### END INIT INFO
 
 SERVICENAME=$(basename $0)
-IHS_CONF=<%= node[:ihs][:instance_conf] %>
+IHS_CONF=/apps/ihs-apps/https-cheftest
 
 case "$1" in
-  start|stop|status)
+  start|stop|restart|status)
     CMD=$1
     ;;
 
   *)
-    echo "Usage: $0 {start|stop|status}"
+    echo "Usage: $0 {start|stop|restart|status}"
     exit 1
     ;;
 esac
 
 shift
 
-$IHS_CONF/$CMD "$@"
+if [ $CMD == "restart" ]
+then
+        $IHS_CONF/stop;
+        sleep 30s;
+        $IHS_CONF/start;
+else
+        $IHS_CONF/$CMD "$@"
+fi

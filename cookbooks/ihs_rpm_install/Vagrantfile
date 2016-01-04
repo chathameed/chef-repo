@@ -8,8 +8,7 @@ Vagrant.configure("2") do |config|
     config.vm.network :forwarded_port, guest: 2000, host: 4567
     config.berkshelf.enabled = true
     config.vm.provision :chef_solo do |chef|
-        chef.add_recipe "ihs_rpm_install"
-    #   chef.add_recipe "ihs"
-		#		chef.add_recipe "ihs_config"
+       chef.add_recipe "ihs_rpm_install"
+       chef.add_recipe "ihs_rpm_config"
     end
 end
