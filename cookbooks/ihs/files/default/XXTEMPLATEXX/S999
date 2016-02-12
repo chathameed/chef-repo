@@ -1,0 +1,101 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+#
+#
+# NOTE: To avoid your system from failing on reboot, do not change this
+#       file in any way.
+# This script is designed to be executed on reboot.
+#------------------------------------------------------------------------------
+
+# Make sure we have PATH set at this  point.
+PATH="$PATH:/bin:/sbin:/usr/bin:/usr/sbin"
+
+# Set this to 0, if you do NOT want autostart after a system reboot. 
+WS_START_ONBOOT=1 
+
+#. /tmp/installIHS7.dat
+#if [ x"$RELOC_DIR" = x"" ];
+#then
+#INSTALLDIR=/opt/IHS7
+#else
+#INSTALLDIR=$RELOC_DIR
+#fi
+
+# Initialize Script scope level variables.
+# WS_HOME contains the application specific items
+WS_HOME=XXXX_INSTALLDIR_XXXX
+LOG_DIR=XXXX_LOG_DIR_XXXX
+WS_VERSION="70013"
+WS_CONF=XXXX_CONF_ROOT_XXXX
+rc_failed="Failure"
+rc_success="Success"
+
+ret=$rc_success
+
+# See how we were called.
+case "$1" in
+  	start_msg)
+        	echo "IHS $WS_VERSION starting ($WS_HOME)"
+		;;
+  	start)
+#		if [ -z "WS_START_ONBOOT" ] || [ "$WS_START_ONBOOT" = "0" ] || [-d $WS_HOME/apps ]; then
+		if [ -z "WS_START_ONBOOT" ] || [ "$WS_START_ONBOOT" = "0" ]; then
+			ret=$rc_success
+		else
+        		echo "IHS $WS_VERSION starting ($WS_HOME)"
+			for each_server in $WS_CONF/*
+			do
+				ret=$rc_success
+				if [ -d "$each_server" ]; then
+			  	   echo "  `basename $each_server`: "
+					INSTNAME=`basename $each_server`
+                                   PIDFILE=`cat $LOG_DIR/$INSTNAME/logs/httpd.pid`
+                                   if [ -f "$PIDFILE" ]; then
+                                      rm -rf $PIDFILE 
+                                   fi   
+              			   if [ -f $each_server/.pw ] ; then            # For SSL startup
+                                      echo "Insecure .pw file found.  Please delete."
+					ret=$rc_failed
+              		  	   elif [ -f $each_server/.nostart ] ; then    # halt startup of server 
+                 		      echo "WARNING: $each_server/start not executed due to presence of .nostart file"  
+					ret=$rc_failed
+              			   else
+			  	      $each_server/start || ret=$rc_failed
+              			   fi
+			    	   echo "$ret"
+			  	   echo ""
+				fi
+			done
+                        echo "Done."
+		fi
+        	;;
+  	stop_msg)
+        	echo "IHS $WS_VERSION stopping ($WS_HOME)"
+		;;
+	stop)
+		echo "IHS $WS_VERSION stopping ($WS_HOME)"
+		for each_server in $WS_CONF/*
+		do
+                        ret=$rc_success
+			if [ -d $each_server ]; then
+			  echo   "  `basename $each_server`:  "
+			  $each_server/stop || ret=$rc_failed
+			  echo "$ret"
+                          echo ""
+			fi
+		done
+                echo "Done."
+        	;;
+    	restart)
+       		$0 stop || return=$rc_failed
+        	$0 start || return=$rc_failed
+        	;;
+    	*)
+       		 echo "Usage: $0 {start|stop|restart}"
+        	exit 1
+        	;;
+esac
+
+# Inform the caller not only verbosely and set an exit status.
+test "$ret" = "$rc_success" || exit 1
+exit 0

@@ -1,4 +1,0 @@
-source "https://supermarket.chef.io"
-
-metadata
-cookbook 'ihs_rpm_config', path: 'C:/Users/ms66518/chef-repo/cookbooks/ihs_rpm_config'

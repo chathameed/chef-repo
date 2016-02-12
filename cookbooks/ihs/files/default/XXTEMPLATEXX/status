@@ -1,0 +1,32 @@
+#!/bin/sh
+#if test -f `pwd`/ihssecvars
+#then
+#		. `pwd`/ihssecvars
+#else
+# Manually update these items and rename ihssecvars to override sourced information
+# or to enable execution from different directories
+#		INSTALLDIR=/opt/ihs/70011
+#		APPDIR=/opt/ihs/apps
+#fi
+
+INSTANCE_NAME=NEWINST
+PID_FILE=LOGROOT/NEWINST/logs/httpd.pid
+
+insName=$INSTANCE_NAME
+
+if test -f $PID_FILE
+then
+	echo "Target PID file: ${PID_FILE}"
+	pid=`cat ${PID_FILE}`
+	echo "Target PID: $pid"
+
+	stats=`ps -ef| grep -c $pid`
+	if test $stats -ne 0 
+	then
+                echo "IHS instance $insName server is running"
+	else
+		echo "Running pid and http.pid mismatch. Restart web server."
+	fi
+else
+                   echo "IHS instance $insName server is not running"
+fi

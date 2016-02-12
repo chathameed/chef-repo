@@ -1,0 +1,8 @@
+default['wsi']['dmgr_profile_name'] = 'vagrantDmgr'
+default['wsi']['dmgr_profile_path'] = '/apps/was-apps/profiles/vagrantDmgr'
+default['wsi']['dmgr_node_name'] = 'vagrantDmgrNode'
+default['wsi']['dmgr_host_name'] = 'dmgr.websphere.vagrant.internal'
+default['wsi']['dmgr_cell_name'] = 'vagrantDmgrCell'
+default['wsi']['admin_user'] = 'vagarnt'
+default['wsi']['admin_password'] = 'vagrant'
+default['wsi']['dmgr_starting_port'] = '10000'

@@ -1,0 +1,137 @@
+#!/bin/sh
+
+##############################################################################################
+# 18/06/2013 Ram Allu 	Adding ability to handle Listen directive in both cases
+#			 		  	1) Listen portNumber eg: Listen 8080
+#					  	2) Listen ipaddress:portNumber   eg: Listen 12.34.56.78:8080
+##############################################################################################
+
+
+#if test -f `pwd`/ihssecvars
+#then
+#		. `pwd`/ihssecvars
+#else
+# Manually update these items and rename ihssecvars to override sourced information
+# or to enable execution from different directories
+#		INSTALLDIR=/opt/ihs/70011
+#		APPDIR=/opt/ihs/apps
+#fi
+export LD_LIBRARY_PATH=<%= node['siteminder']['webagent_lib'] %>
+SERVER_ROOT=<%= node['siteminder']['ihs_bin_root'] %>
+APP_ROOT=<%= node['siteminder']['ihs_app_root'] %>
+PRODUCT_BIN=apachectl
+INSTANCE_NAME=<%= node['siteminder']['ihs_instance_name'] %>
+LOG_ROOT=<%= node['siteminder']['ihs_log_root'] %>
+
+#get user id
+UserId=`id`
+UserId=${UserId%%\)*}
+UserId=${UserId#*\(}
+#get values from configuration
+CUser=$(grep "^User" ${APP_ROOT}/${INSTANCE_NAME}/conf/httpd.conf | awk '{print $2}')
+CPort=$(grep "^Listen" ${APP_ROOT}/${INSTANCE_NAME}/conf/httpd.conf | awk '{print $2}' | awk -F: '$0 ~ /:/ {print $2}; $0 !~ /:/ {print $0}')
+
+
+# Ensure large core files can be written
+# LINUX only.  Other OS product may use different commands
+ulimit -c unlimited
+
+if test -f $SERVER_ROOT/bin/$PRODUCT_BIN
+then
+#	echo "Server binaries located ..."
+        echo "Server starting ......"
+else
+	echo "Server binaries not found"
+	echo "Please check the ihssecvars files for the correct path or"
+	echo "Manually update the paths in this start script"
+fi
+
+# This sources global variables found in SERVER_ROOT/bin/envvars
+# scripts.  Modify at your own risk.
+if test -f ${SERVER_ROOT}/bin/envvars
+then
+		. ${SERVER_ROOT}/bin/envvars
+		. ${SERVER_ROOT}/bin/gsk_envvars
+fi
+
+DATE=`/bin/date '+%m%d%H%M'`
+LogFile=${LOG_ROOT}/start.log
+LogDir=${LOG_ROOT}/
+if [ -f ${LogFile} ]; then
+mv ${LogFile} ${LogFile}.${DATE}
+#  /bin/compress ${LogFile}.${DATE}
+fi
+
+SHLIB_PATH=${SHLIB_PATH}:${LD_LIBRARY_PATH}; export SHLIB_PATH
+PATH=${SERVER_ROOT}/bin:${PATH}:<%= node['siteminder']['webagent_lib'] %>; export PATH
+
+cd $SERVER_ROOT/bin
+
+if [ $# -eq 0 ]
+then
+	arg="-start";
+elif [ $# -eq 1 -a x$1 = x-e -o x$1 = x-i ]
+then
+        arg="-start";
+else
+	arg=$1;
+	shift;
+fi
+
+case $arg in
+        -start)
+                if [ "${UserId}" = "root" ] ; then
+                   if [ $CPort -le 1024 -o "${CUser}" = "nobody" ] ; then
+                      # root start
+                      $SERVER_ROOT/bin/$PRODUCT_BIN -f ${APP_ROOT}/${INSTANCE_NAME}/conf/httpd.conf -k start > $LogFile
+                      if test $? -ne 0 ; then
+                              exit 1
+                      fi
+                   else
+                      # su start
+                      su ${CUser} "-c $SERVER_ROOT/bin/$PRODUCT_BIN -f ${APP_ROOT}/${INSTANCE_NAME}/conf/httpd.conf -k start > $LogFile"
+                      if test $? -ne 0 ; then
+                              exit 1
+                      fi
+                   fi
+                else
+                   if [ $CPort -le 1024 -o "${CUser}" != "${UserId}" ] ; then
+                      echo "<ERROR> ${UserId} unable to start instance, confirm Listen port is > 1024, and User == ${UserId}"
+                      exit 1
+                   else
+                      # FID start
+                      $SERVER_ROOT/bin/$PRODUCT_BIN -f ${APP_ROOT}/${INSTANCE_NAME}/conf/httpd.conf -k start > $LogFile
+                      if test $? -ne 0 ; then
+                              exit 1
+                      fi
+                   fi
+                fi
+                sleep 8
+                chmod 640 $LogFile
+                chmod 640 $LogDir/httpd.pid
+                chmod 640 $LogDir/error.*
+                ;;
+        -version)
+		$SERVER_ROOT/bin/$PRODUCT_BIN -version
+		if test $? -ne 0 ; then
+			exit 1
+		fi
+		;;
+        -configtest)
+		$SERVER_ROOT/bin/$PRODUCT_BIN -f ${APP_ROOT}/${INSTANCE_NAME}/conf/httpd.conf -t
+		if test $? -ne 0 ; then
+			echo 'failure: configuration test failed'
+			exit 1
+		fi
+		echo 'success: configuration was parsed successfully'
+		;;
+	-shell)
+		/bin/sh
+		;;
+	*)
+		echo "Usage: start [-start|-shell|-version|-configtest]"
+		exit 1
+		;;
+esac
+
+exit 0

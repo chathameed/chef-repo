@@ -1,0 +1,11 @@
+default['ihs']['dir'] = "/apps/ihs-bin/IHS70037"
+default['ihs']['conf_dir'] = "/apps/ihs-apps/https-cheftest/conf"
+default['ihs']['docroot_dir'] = "/apps/siteminder/webagent/https-cheftest"
+default['ihs']['log_dir'] = "/logs/ihs/https-cheftest/"
+default['ihs']['log_root'] = '/logs/ihs/https-cheftest'
+default['ihs']['hostname'] = "localhost"
+default['ihs']['siteminder_root'] = "/apps/siteminder"
+default['ihs']['plugin_dir'] = "/apps/ihs-bin/IHS70037/Plugins/"
+default['ihs']['key_file'] = "/apps/ihs-apps/https-cheftest/conf/https-cheftest.kdb"
+default['ihs']['stash_file'] = "/apps/ihs-apps/https-cheftest/conf/https-cheftest.sth"
+default['ihs']['cert_CN'] = "https-cheftest"

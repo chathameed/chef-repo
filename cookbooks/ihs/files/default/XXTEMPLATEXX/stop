@@ -1,0 +1,72 @@
+#!/bin/sh
+
+#if test -f `pwd`/ihssecvars
+#then
+#		. `pwd`/ihssecvars
+#else
+# Manually update these items and rename ihssecvars to override sourced information
+# or to enable execution from different directories
+#		INSTALLDIR=/opt/ihs/70011
+#		APPDIR=/opt/ihs/apps
+#fi
+
+SERVER_ROOT=SERVERROOT
+APP_ROOT=APPROOT
+PRODUCT_BIN=apachectl
+INSTANCE_NAME=NEWINST
+PID_FILE=LOGROOT/NEWINST/logs/httpd.pid
+# get userid
+UserId=`id`
+UserId=${UserId%%\)*}
+UserId=${UserId#*\(}
+
+# get runtime userid
+if [ "${UserId}" != "root" ] ; then
+        if [ -f ${PID_FILE} ] ; then
+           PID=$(cat ${PID_FILE} | awk '{print $1}')
+           PIDUser=$(ps -ef | awk '$2 == inval {print $1}' inval=${PID})
+
+           if [ "${PIDUser}" != "${UserId}" ] ;then
+             echo "<ERROR> UserId =  ${UserId} does not have perm to stop process ${PID} owned by ${PIDUser}"
+             exit 1
+           fi
+
+        fi
+fi
+
+if test -f $SERVER_ROOT/bin/$PRODUCT_BIN
+then
+#	echo "Server binaries located ..."
+        echo "Stopping server .........."
+else
+	echo "Server binaries not found"
+	echo "Please check the ihssecvars files for the correct path or"
+	echo "Manually update the paths in this start script"
+fi
+
+PATH=${SERVER_ROOT}/bin/:${PATH}; export PATH
+
+if test -f ${SERVER_ROOT}/bin/envvars
+then
+                . ${SERVER_ROOT}/bin/envvars
+fi
+
+
+${SERVER_ROOT}/bin/$PRODUCT_BIN -f ${APP_ROOT}/NEWINST/conf/httpd.conf -k stop
+
+loop_counter=1
+max_count=30
+while test $loop_counter -le $max_count; do
+	loop_counter=`expr $loop_counter + 1`
+	if test -f $PID_FILE ; then
+		sleep 2
+	else
+		exit 0
+	fi
+done
+echo server not responding to exit command
+echo killing process 
+kill -9 -`/usr/bin/cat $PID_FILE`
+rm $PID_FILE
+
+exit 1

@@ -1,0 +1,14 @@
+default['siteminder']['ihs_user'] = node['ihs']['user_id']
+default['siteminder']['ihs_group'] = node['ihs']['group']
+default['siteminder']['ihs_bin_root'] = node['ihs']['dir']
+default['siteminder']['ihs_app_root'] = node['ihs']['conf_root']
+default['siteminder']['ihs_instance_root'] = node['ihs']['instance_conf']
+default['siteminder']['ihs_conf_root'] = node['ihs']['conf_dir']
+default['siteminder']['ihs_instance_name'] = node['ihs']['instance_name']
+default['siteminder']['ihs_log_root'] = node['ihs']['log_root']
+default['siteminder']['ihs_instance_port'] = node['ihs']['instance_port']
+default['siteminder']['ihs_hostname'] = node['ihs']['hostname']
+default['siteminder']['ihs_plugin_root'] = node['ihs']['plugin_dir']
+default['siteminder']['ihs_docroot_dir'] = '/apps/siteminder/webagent/https-cheftest/siteminder/'
+default['siteminder']['siteminder_root'] = node['ihs']['siteminder_root']
+default['siteminder']['webagent_lib'] = '/apps/siteminder/webagent/bin/'
