@@ -24,7 +24,7 @@ LockFile <%= node['ihs']['log_dir'] %>/accept.lock
 # PidFile: The file in which the server should record its process
 # identification number when it starts.
 #
-PidFile <%= node['ihs']['log_dir'] %>httpd.pid
+PidFile <%= node['ihs']['log_root'] %>/httpd.pid
 
 #
 # Timeout: The number of seconds before receives and sends time out.
