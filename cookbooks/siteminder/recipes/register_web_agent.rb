@@ -19,4 +19,5 @@ bash 'register_siteminder' do
   source /apps/siteminder/webagent/nete_wa_env.sh
   ./smreghost -i #{policy_server_1} -u #{sm_user} -p #{sm_password} -hn #{hostname} -hc #{hco} -f #{host_config_file}
   EOH
+  not_if { ::File.exists?(host_config_file) }
 end
