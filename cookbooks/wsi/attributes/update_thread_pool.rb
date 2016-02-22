@@ -1,0 +1,5 @@
+default['wsi']['thredpool_script_file'] = '/repository/configurethreadpool.py'
+default['wsi']['threadpool_min_value'] = '25'
+default['wsi']['threadpool_max_value'] = '25'
+default['wsi']['server_name'] = 'server1'
+default['wsi']['node_name'] = 'vagrantNode1'

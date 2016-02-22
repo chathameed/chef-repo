@@ -21,6 +21,6 @@ end
 
 bash 'was_move_cate_prop_file' do
   code <<-EOH
-  mv #{node[:wsi][:was_bin_path]}/WebSphere/85-64/properties/wasprofile.properties.bak #{node[:wsi][:was_bin_path]}/WebSphere/85-64/properties/wasprofile.properties
+  cp #{node[:wsi][:was_bin_path]}/WebSphere/85-64/properties/wasprofile.properties.bak #{node[:wsi][:was_bin_path]}/WebSphere/85-64/properties/wasprofile.properties
   EOH
 end

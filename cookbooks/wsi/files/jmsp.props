@@ -1,0 +1,25 @@
+#
+# Header
+#
+ResourceType=JMSProvider
+ImplementingResourceType=JMSProvider
+ResourceId=Cell=!{cellName}:JMSProvider=vijaya
+#DELETE=true
+
+#
+#Properties
+#
+supportsASF=true #boolean
+classpath={}
+name=vijaya
+externalProviderURL=myEPURL
+nativepath={}
+description=WebSphere MQ Messaging Provider
+providerType=null #readonly
+externalInitialContextFactory=myEICFactory
+
+EnvironmentVariablesSection
+#
+#
+#Environment Variables
+cellName=mxgppsitCell  

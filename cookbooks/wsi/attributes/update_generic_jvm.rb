@@ -1,0 +1,6 @@
+default['wsi']['generic_jvm_script_file'] = '/repository/genericJVM.py'
+default['wsi']['cluster_name'] = 'vagrantCluster'
+default['wsi']['class_path'] = '/apps/'
+default['wsi']['boot_class_path'] = '/apps/bootclasspath'
+default['wsi']['initial_heap_size'] = '250'
+default['wsi']['maximum_heap_size'] = '500'

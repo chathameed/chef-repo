@@ -1,0 +1,5 @@
+host-region:B
+esb-environment:PROD-SWDC-1
+endpoint-multiple-connection:false
+endpoint-connection-config-file:esb-endpoint-connection.xml
+endpoint-binding-config-file:esb-endpoint-binding.xml
