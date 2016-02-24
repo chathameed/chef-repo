@@ -3,10 +3,10 @@ import sys;
 import traceback;
 
 #####################################################################
-## Disable Core group service at JVM level
+## Modify JVM Monitoing policy
 #####################################################################
 
-def modifyHAManager(clusterName, isEnabled, isActivateEnabled):
+def modifyJVMMonitoring(clusterName, startupAttempts, interval):
             print "Cluster Name = " + clusterName + "\n"
             clusterID = AdminConfig.getid("/ServerCluster:" + clusterName + "/")
             serverList=AdminConfig.list('ClusterMember', clusterID)
@@ -16,20 +16,19 @@ def modifyHAManager(clusterName, isEnabled, isActivateEnabled):
                     serverName=AdminConfig.showAttribute(serverID, 'memberName')
                     print "ServerName = " + serverName + "\n"
                     server=AdminConfig.getid("/Server:" +serverName + "/")
-                    process = AdminConfig.list("HAManagerService",server)
-                    AdminConfig.modify(process, [ ["enable", isEnabled], ["activateEnabled", isActivateEnabled] ])
+                    process = AdminConfig.list("MonitoringPolicy",server)
+                    AdminConfig.modify(process, [ ["maximumStartupAttempts", startupAttempts], ["pingInterval", interval] ])
                     AdminConfig.save()
-                    print "Core Group service disabled for : " +serverName + "\n"
-
+                    print "JVM Monitoring policy updated for : " +serverName + "\n"
 
 #####################################################################
 ## Main
 #####################################################################
 if len(sys.argv) != 3:
-        print "This script requires clusterName, isEnabled, isActivateEnabled"
+        print "This script requires clusterName, startupAttempts , interval"
         sys.exit(1)
 else:
         clusterName = sys.argv[0]
-        isEnabled = sys.argv[1]
-        isActivateEnabled = sys.argv[2]
-        modifyHAManager(clusterName, isEnabled, isActivateEnabled)
+        startupAttempts = sys.argv[1]
+        interval = sys.argv[2]
+        modifyJVMMonitoring(clusterName, startupAttempts, interval)

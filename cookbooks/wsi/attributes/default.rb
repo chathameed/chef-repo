@@ -33,8 +33,8 @@ default['wsi']['dmgr_soap_port'] = 'dmgr.websphere.vagrant.internal'
 default['wsi']['dmgr_soap_port'] = '10003'
 
 #create cluster
-default['wsi']['cluster_name'] = 'vagrantCluster'
 default['wsi']['create_cluster_py'] = '/repository/createcluster.py'
+default['wsi']['cluster_name'] = 'vagrantCluster'
 default['wsi']['script_lang'] = 'jython'
 
 #add first cluster member
@@ -55,22 +55,26 @@ default['wsi']['is_enaled'] = 'false'
 default['wsi']['is_activate_enaled'] = 'true'
 
 #Update Dyna Cache Size
+default['wsi']['dyna_cache_size_script_file'] = '/repository/updatedynacache.py'
 default['wsi']['dyna_cache_size'] = '3500'
+
+#Update JVM Monitoring Policy
+default['wsi']['modify_monit_script_file'] = '/repository/updatemonitoringpolicy.py'
+default['wsi']['startup_attempts'] = '3'
+default['wsi']['ping_interval'] = '600'
 
 #update generic JVM arguments
 default['wsi']['generic_jvm_script_file'] = '/repository/genericJVM.py'
 default['wsi']['cluster_name'] = 'vagrantCluster'
-default['wsi']['class_path'] = '/apps/'
-default['wsi']['boot_class_path'] = '/apps/bootclasspath'
-default['wsi']['initial_heap_size'] = '250'
-default['wsi']['maximum_heap_size'] = '500'
+default['wsi']['enable_verbose_gc'] = 'true'
+default['wsi']['initial_heap_size'] = '1024'
+default['wsi']['maximum_heap_size'] = '1024'
 
 #update thread pool
 default['wsi']['thredpool_script_file'] = '/repository/configurethreadpool.py'
-default['wsi']['threadpool_min_value'] = '25'
-default['wsi']['threadpool_max_value'] = '25'
-default['wsi']['server_name'] = 'server1'
-default['wsi']['node_name'] = 'vagrantNode1'
+default['wsi']['threadpool_name'] = 'WebContainer'
+default['wsi']['threadpool_min_value'] = '50'
+default['wsi']['threadpool_max_value'] = '50'
 
 #create oracle JDBC provider and data source
 default['wsi']['datasource_script_file'] = '/repository/datasourcecreation.py'
@@ -95,6 +99,7 @@ default['wsi']['mq_svrconn_channel'] = 'MXCAR.SVRCONN'
 default['wsi']['mq_qmgr_port'] = '1414'
 
 #create JMS MQ Queues
+default['wsi']['queue_creation_script_file'] = '/repository/createqueues.py'
 default['wsi']['queue_display_name'] = 'ECL_MX_CARDS_RCVR'
 default['wsi']['queue_jndi_name'] = 'jms/ECL_MX_CARDS_RCVR'
 default['wsi']['queue_name'] = 'ECS.MX.TO_ECL_RPL_L1.LISTEN'
