@@ -69,6 +69,7 @@ default['wsi']['cluster_name'] = 'vagrantCluster'
 default['wsi']['enable_verbose_gc'] = 'true'
 default['wsi']['initial_heap_size'] = '1024'
 default['wsi']['maximum_heap_size'] = '1024'
+default['wsi']['umask'] = '022'
 
 #update thread pool
 default['wsi']['thredpool_script_file'] = '/repository/configurethreadpool.py'
@@ -87,6 +88,17 @@ default['wsi']['ds_url'] = 'jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TC
 default['wsi']['ds_user_alias'] = 'test/testdb'
 default['wsi']['ds_user'] = 'chor'
 default['wsi']['ds_pass'] = 'chor'
+
+#Update Data source Connection Pool properties
+default['wsi']['jdbc_conn_pool_script_file'] = '/repository/updateDSConnectionpool.py'
+default['wsi']['conn_timeout'] = '60'
+default['wsi']['ds_max_conn'] = '200'
+default['wsi']['ds_min_conn'] = '50'
+default['wsi']['reap_time'] = '600'
+default['wsi']['unused_timeout'] = '1800'
+default['wsi']['aged_timeout'] = '0'
+default['wsi']['purge_policy'] = 'EntirePool'
+default['wsi']['statement_cache'] = '200'
 
 #create JMS MQ Queue connection factory
 default['wsi']['qcf_script_file'] = '/repository/createqcf.py'
