@@ -24,7 +24,7 @@ def createConnectionFactories():
 	queueMgrHostname = raw_input(" Please enter queue Manager hostname:  ");
 	queueMgrSvrConnectionChannel = raw_input(" Please enter connection channel:  ");
 	port = raw_input(" Please enter port number:  ");
-	cftype = 'CF';
+	cftype = 'QCF';
 	
 	clusterid=AdminConfig.getid('/ServerCluster:'+clusterName+'/');
 	AdminTask.createWMQConnectionFactory(clusterid,["-name "+connectionFactoryName+" -jndiName "+jndiName+" -qmgrName "+queueMgrName+" -wmqTransportType "+transportType+" -qmgrHostname "+queueMgrHostname+" -qmgrPortNumber "+port+" -qmgrSvrconnChannel "+queueMgrSvrConnectionChannel+" -type "+cftype]);

@@ -58,8 +58,6 @@ else:
 	user = sys.argv[7]
 	jdbcpass = sys.argv[8]
 
-#        url = "jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=prd1901-vip.nam.nsroot.net)(PORT=1526))(ADDRESS=(PROTOCOL=TCP)(HOST=prd1902-vip.nam.nsroot.net)(PORT=1526))(ADDRESS=(PROTOCOL=TCP)(HOST=prd1903-vip.nam.nsroot.net)(PORT=1526))(LOAD_BALANCE=yes)(CONNECT_DATA=(SERVER = DEDICATED)(SERVICE_NAME=CHRDANT_TAF_SWDC)(FAILOVER_MODE=(TYPE=SELECT)(METHOD=BASIC)(RETRIES=180)(DELAY=5))))"
-
 ds = createDataSource(dsName, dsJNDIName, dsDesc, jdbcName, authUser, clusterName, url, userAlias, user, jdbcpass)
 print "After Create DATASTORE"
 

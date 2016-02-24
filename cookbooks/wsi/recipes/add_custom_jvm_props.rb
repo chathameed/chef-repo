@@ -1,5 +1,6 @@
 # Script to update the Jvm Property values
-
+wsadmin_path = "#{node['wsi']['wsadmin_path']}"
+script_lang = "#{node['wsi']['script_lang']}"
 was_user = "#{node['wsi']['was_user_id']}"
 was_group = "#{node['wsi']['was_group_id']}"
 jvm_script_file = "#{node['wsi']['jvm_property_script_file']}"
@@ -24,5 +25,5 @@ action :create
 end
 
 execute 'jvmproperty' do
-        command " #{wsadminpath}/wsadmin.sh -lang #{script_lang} -f #{jvm_script_file} #{server_name} #{node_name} "
+        command " #{wsadmin_path}/wsadmin.sh -lang #{script_lang} -f #{jvm_script_file} #{server_name} #{node_name} "
 end

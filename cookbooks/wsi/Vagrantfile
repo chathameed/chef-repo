@@ -13,9 +13,15 @@ Vagrant.configure("2") do |config|
         chef.add_recipe "wsi::default"
         chef.add_recipe "wsi::install_iim_was"
         chef.add_recipe "wsi::create_dmgr_profile"
-        chef.add_recipe "wsi::create_cluster"
-        chef.add_recipe "wsi::add_first_cluster_member"
-        chef.add_recipe "wsi::update_thread_pool"
+        #chef.add_recipe "wsi::create_cluster"
+        #chef.add_recipe "wsi::add_first_cluster_member"
+        #chef.add_recipe "wsi::add_cluster_members"
+        #chef.add_recipe "wsi::create_oracle_jdbc"
+        #chef.add_recipe "wsi::create_jms_mq_qcf"
+        #chef.add_recipe "wsi::create_jms_mq_queues"
+        #chef.add_recipe "wsi::update_generic_jvm"
+        #chef.add_recipe "wsi::add_custom_jvm_props"
+        #chef.add_recipe "wsi::update_thread_pool"
       end
     end
     config.vm.define :node1 do |node1_config|

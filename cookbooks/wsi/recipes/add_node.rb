@@ -1,13 +1,3 @@
-=begin
-bash 'add_node_to_dmgr' do
-  code <<-EOH
-	#{node[:wsi][:node1_profile_path]}/bin/addNode.sh\
-   #{node[:wsi][:dmgr_host_name]}\
-   #{node[:wsi][:dmgr_soap_port]}
-  EOH
-end
-=end
-
 execute 'add_node_to_dmgr' do
   command "#{node[:wsi][:node1_profile_path]}/bin/addNode.sh\
    #{node[:wsi][:dmgr_host_name]}\

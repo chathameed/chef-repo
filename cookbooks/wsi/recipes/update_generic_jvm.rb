@@ -1,5 +1,6 @@
 # Script to update the Jvm Property values
-
+wsadmin_path = "#{node['wsi']['wsadmin_path']}"
+script_lang = "#{node['wsi']['script_lang']}"
 was_user = "#{node['wsi']['was_user_id']}"
 was_group = "#{node['wsi']['was_group_id']}"
 generic_jvm_script_file = "#{node['wsi']['generic_jvm_script_file']}"
@@ -19,5 +20,5 @@ cookbook_file "#{generic_jvm_script_file}" do
 end
 
 execute 'jvmproperty' do
-        command " #{wsadminpath}/wsadmin.sh -lang #{script_lang} -f #{generic_jvm_script_file} #{cluster_name} #{class_path} #{boot_class_path} #{initial_heap_size} #{maximum_heap_size} #{umask}"
+        command " #{wsadmin_path}/wsadmin.sh -lang #{script_lang} -f #{generic_jvm_script_file} #{cluster_name} #{class_path} #{boot_class_path} #{initial_heap_size} #{maximum_heap_size} #{umask}"
 end
