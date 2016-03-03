@@ -77,6 +77,16 @@ default['wsi']['threadpool_name'] = 'WebContainer'
 default['wsi']['threadpool_min_value'] = '50'
 default['wsi']['threadpool_max_value'] = '50'
 
+#Create WebSphere Variable
+default['wsi']['variable_name'] = 'ORACLE_JDBC_DRIVER_PATH'
+default['wsi']['variable_value'] = '/apps/oracle/client'
+default['wsi']['variable_desc'] = 'Oracle JDBC Driver Path'
+
+#Create Shared Library
+default['wsi']['lib_name'] = 'TestSharedLib'
+default['wsi']['lib_path'] = '/apps/test/;/apps/test2/;'
+default['wsi']['is_isolated_loader'] = 'false'
+
 #create oracle JDBC provider and data source
 default['wsi']['datasource_script_file'] = '/repository/datasourcecreation.py'
 default['wsi']['jdbc_provider_script_file'] = '/repository/createJDBCprovider.py'
