@@ -1,9 +1,6 @@
 was Cookbook
 ============
-TODO: Enter the cookbook description here.
-
-e.g.
-This cookbook makes your favorite breakfast sandwich.
+This Cookbook is to install and configure websphere application server.
 
 Requirements
 ------------
